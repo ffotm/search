@@ -327,7 +327,7 @@ const medicines = [{
 ];
 
 let cart = new Map();
-let selectedProducts = 0; // Track selected products
+let selectedProducts = 0; 
 function updateCartSummary() {
     const itemCount = document.getElementById('itemCount');
     const totalPrice = document.getElementById('totalPrice');
@@ -352,7 +352,7 @@ function updateCartSummary() {
 
 function goToCart() {
     sessionStorage.setItem("cartData", JSON.stringify(Array.from(cart.entries())));
-    window.location.href = "confirmation/cart.html"; // Redirect to cart page
+    window.location.href = "confirmation/cart.html"; 
 }
 
 
@@ -385,11 +385,11 @@ function updateQuantity(medicine, change, card) {
         card.classList.add('selected');
     }
 
-    // Update the quantity inside the card
+   
     const quantitySpan = card.querySelector('.quantity');
     quantitySpan.textContent = cart.get(medicine) || 0;
 
-    // Show or hide the "-" button based on quantity
+   
     const minusButton = card.querySelector('.minus');
     minusButton.style.display = cart.get(medicine) > 0 ? 'inline-block' : 'none';
 
@@ -492,12 +492,12 @@ let selectedPayment = null;
 function selectPayment(method) {
     selectedPayment = method;
 
-    // Remove selection from all
+  
     document.querySelectorAll('.payment-option').forEach(option => {
         option.classList.remove('selected');
     });
 
-    // Add selection highlight
+    
     document.getElementById(method).classList.add('selected');
 }
 
@@ -513,7 +513,7 @@ function processPayment() {
     document.getElementById('confirmation-page').classList.remove('active');
     document.getElementById('success-page').classList.add('active');
 }
-// Apply Filters after Searching
+
 function applyFilters() {
     const sortOrder = document.getElementById('sortOrder').value;
     sortProducts(sortOrder);
@@ -523,10 +523,10 @@ function applyFilters() {
 
 
 
-// Event Listeners
+
 document.querySelector('.search-area__med-keyword').addEventListener('input', lookfor);
 document.getElementById('sortOrder').addEventListener('change', () => applyFilters());
 
 
-// Initial Render
+
 renderProducts();
