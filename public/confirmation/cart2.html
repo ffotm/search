@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Checkout System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .page {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        h2 {
+            color: #1a237e;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 600;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+        
+        .card-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .card-option {
+            background: #fff;
+            border: 2px solid #e3f2fd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-option:hover {
+            transform: translateY(-5px);
+            border-color: #2196f3;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+        }
+        
+        .card-option i {
+            font-size: 40px;
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+        
+        .card-option h3 {
+            color: #1a237e;
+            margin-bottom: 10px;
+        }
+        
+        .scan-section {
+            text-align: center;
+            padding: 30px;
+            border: 2px dashed #2196f3;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a237e;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e3f2fd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+        
+        .checkbox-group {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8faff;
+            border-radius: 8px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #1a237e, #2196f3);
+            color: white;
+            padding: 16px 30px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(33, 150, 243, 0.3);
+        }
+        
+        .coupon-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8faff;
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .coupon-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Card Selection Page -->
+        <div id="card-selection" class="page active">
+            <h2><i class="fas fa-id-card"></i> Select Your Card Type</h2>
+            <div class="card-options">
+                <div class="card-option" onclick="selectCard('id')">
+                    <i class="fas fa-id-card"></i>
+                    <h3>ID Card</h3>
+                    <p>Standard identification</p>
+                </div>
+                <div class="card-option" onclick="selectCard('shifa')">
+                    <i class="fas fa-hospital-user"></i>
+                    <h3>Shifa Card</h3>
+                    <p>Healthcare service card</p>
+                </div>
+                <div class="card-option" onclick="selectCard('military')">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Military Card</h3>
+                    <p>Military personnel card</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Military Card Validation -->
+        <div id="military-validation" class="page">
+            <h2><i class="fas fa-shield-alt"></i> Military Card Validation</h2>
+            <div class="scan-section">
+                <i class="fas fa-qrcode" style="font-size: 48px; color: #2196f3;"></i>
+                <h3>Scan Military Card</h3>
+                <p>Place your military card in front of the camera</p>
+                <button onclick="simulateScan('military')">Simulate Card Scan</button>
+            </div>
+            <div class="form-group">
+                <label>Military ID Code</label>
+                <input type="text" placeholder="Enter your military ID code">
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="chronic-illness" onchange="toggleCouponSection()">
+                    I have a chronic illness
+                </label>
+            </div>
+            <div id="coupon-section" class="coupon-section">
+                <div class="form-group">
+                    <label>Coupon Code</label>
+                    <input type="text" placeholder="Enter your coupon code">
+                </div>
+            </div>
+            <button onclick="validateMilitary()">Continue</button>
+        </div>
+
+        <!-- Shifa Card Validation -->
+        <div id="shifa-validation" class="page">
+            <h2><i class="fas fa-hospital-user"></i> Shifa Card Validation</h2>
+            <div class="scan-section">
+                <i class="fas fa-qrcode" style="font-size: 48px; color: #2196f3;"></i>
+                <h3>Scan Shifa Card</h3>
+                <p>Place your Shifa card in front of the camera</p>
+                <button onclick="simulateScan('shifa')">Simulate Card Scan</button>
+            </div>
+            <button onclick="validateShifa()">Continue</button>
+        </div>
+
+        <!-- Payment Methods Page -->
+        <div id="payment-methods" class="page">
+            <h2><i class="fas fa-credit-card"></i> Select Payment Method</h2>
+            <div class="payment-options">
+                <!-- Your existing payment methods content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectCard(type) {
+            document.getElementById('card-selection').classList.remove('active');
+
+            if (type === 'military') {
+                document.getElementById('military-validation').classList.add('active');
+            } else if (type === 'shifa') {
+                document.getElementById('shifa-validation').classList.add('active');
+            } else {
+                // ID card goes directly to payment
+                document.getElementById('payment-methods').classList.add('active');
+            }
+        }
+
+        function toggleCouponSection() {
+            const couponSection = document.getElementById('coupon-section');
+            const checkbox = document.getElementById('chronic-illness');
+            if (checkbox.checked) {
+                couponSection.classList.add('active');
+            } else {
+                couponSection.classList.remove('active');
+            }
+        }
+
+        function simulateScan(type) {
+            const button = event.target;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check"></i> Scan Complete';
+                button.style.backgroundColor = '#4CAF50';
+            }, 2000);
+        }
+
+        function validateMilitary() {
+            document.getElementById('military-validation').classList.remove('active');
+            document.getElementById('payment-methods').classList.add('active');
+        }
+
+        function validateShifa() {
+            document.getElementById('shifa-validation').classList.remove('active');
+            document.getElementById('payment-methods').classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
