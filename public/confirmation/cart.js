@@ -1,7 +1,7 @@
-let selectedPaymentType = null; // Store selected payment method
+let selectedPaymentType = null; 
 let chronicIllnessSelected = false;
 
-// ✅ Load Cart Function
+
 function loadCart() {
     const cartData = JSON.parse(sessionStorage.getItem("cartData")) || [];
     const cartItemsContainer = document.getElementById("cart-items");
@@ -13,7 +13,7 @@ function loadCart() {
 
     if (cartData.length === 0) {
         cartItemsContainer.innerHTML = '<p class="empty-message">Your cart is empty.</p>';
-        confirmBtn.disabled = true; // Disable confirm if cart is empty
+        confirmBtn.disabled = true; 
         cartTotal.textContent = '0.00';
         return;
     }
@@ -43,18 +43,18 @@ function loadCart() {
     });
 
     cartTotal.textContent = total.toFixed(2);
-    confirmBtn.disabled = false; // Enable confirm button when items exist
+    confirmBtn.disabled = false; 
 }
 
 function goToConfirmation() {
-    // Get total price from cart
+  
     const total = document.getElementById("cart-total").textContent;
 
-    // Save cart data & total price before switching pages
+
     sessionStorage.setItem("cartData", JSON.stringify(getCartData()));
     sessionStorage.setItem("totalPrice", total);
 
-    // Hide cart page, show card selection page
+   
     document.getElementById('cart-page').classList.remove('active');
     document.getElementById('confirmation-page').classList.add('active');
     document.getElementById('card-selection').classList.add('active'); // Show card selection
@@ -62,30 +62,30 @@ function goToConfirmation() {
 
 
 
-// ✅ Function to retrieve cart data
+
 function getCartData() {
     return JSON.parse(sessionStorage.getItem("cartData")) || [];
 }
 
-// ✅ Update Quantity Function
+
 function updateQuantity(index, change) {
     let cartData = getCartData();
-    cartData[index][1] += change; // Update quantity
+    cartData[index][1] += change; 
 
     if (cartData[index][1] <= 0) {
-        cartData.splice(index, 1); // Remove item if quantity reaches 0
+        cartData.splice(index, 1); 
     }
 
     sessionStorage.setItem("cartData", JSON.stringify(cartData));
-    loadCart(); // Refresh the cart display
+    loadCart(); 
 }
 
-// ✅ Remove from Cart Function
+
 function removeFromCart(index) {
     let cartData = getCartData();
-    cartData.splice(index, 1); // Remove item completely
+    cartData.splice(index, 1);
     sessionStorage.setItem("cartData", JSON.stringify(cartData));
-    loadCart(); // Refresh cart
+    loadCart(); 
 }
 
 function toggleCouponSection() {
@@ -98,7 +98,7 @@ function toggleCouponSection() {
     }
 }
 
-// ✅ Handle Payment Selection
+
 function selectCard(type) {
     document.getElementById('card-selection').classList.remove('active');
 
@@ -107,17 +107,17 @@ function selectCard(type) {
     } else if (type === 'shifa') {
         document.getElementById('shifa-validation').classList.add('active');
     } else {
-        goToPaymentMethods(); // ID card goes directly to payment
+        goToPaymentMethods(); 
     }
 }
 
-// ✅ Military Validation
+
 function validateMilitary() {
     document.getElementById('military-validation').classList.remove('active');
     goToPaymentMethods();
 }
 
-// ✅ Shifa Validation
+
 function validateShifa() {
     document.getElementById('shifa-validation').classList.remove('active');
     goToPaymentMethods();
@@ -125,31 +125,30 @@ function validateShifa() {
 
 
 function goToPaymentMethods() {
-    // Retrieve total price
+ 
     const total = sessionStorage.getItem("totalPrice") || "0.00";
 
-    // Update the UI
+   
     document.getElementById("payment-total").textContent = `المبلغ الاجمالي: دج ${total}`;
 
-    // Show the payment section
     document.getElementById('payment-methods').classList.add('active');
 }
 
 function selectPaymentMethod(method) {
-    // Remove selected class from all options
+
     document.querySelectorAll('.payment-option').forEach(option => {
         option.classList.remove('selected');
     });
 
-    // Add selected class to clicked option
+
     event.currentTarget.classList.add('selected');
 
-    // Hide all forms
+
     document.querySelectorAll('.payment-form').forEach(form => {
         form.classList.remove('active');
     });
 
-    // Show selected form
+  
     document.getElementById(`${method}-form`).classList.add('active');
 }
 
@@ -163,10 +162,10 @@ function processPayment() {
         button.innerHTML = '<i class="fas fa-check"></i> Payment Successful';
         button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
 
-        // Show success message
+    
         setTimeout(() => {
             alert('Payment processed successfully! Thank you for your payment.');
-            // Reset form if needed
+         
             resetForms();
         }, 1000);
     }, 2000);
@@ -181,7 +180,6 @@ function generateCashSlip() {
         button.innerHTML = '<i class="fas fa-check"></i> Slip Generated';
         button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
 
-        // Show success message
         setTimeout(() => {
             alert('Cash payment slip has been generated. Please proceed to the counter.');
             resetForms();
@@ -199,7 +197,7 @@ function verifyInsurance() {
         button.innerHTML = '<i class="fas fa-check"></i> Insurance Verified';
         button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
 
-        // Show success message
+   
         setTimeout(() => {
             alert('Insurance verified successfully! Your coverage has been applied.');
             resetForms();
@@ -208,12 +206,11 @@ function verifyInsurance() {
 }
 
 function resetForms() {
-    // Reset all input fields
+
     document.querySelectorAll('input').forEach(input => {
         input.value = '';
     });
 
-    // Reset all buttons
     document.querySelectorAll('button').forEach(btn => {
         if (btn.innerHTML.includes('Successful') ||
             btn.innerHTML.includes('Generated') ||
@@ -224,20 +221,20 @@ function resetForms() {
         }
     });
 
-    // Hide all payment forms
+ 
     document.querySelectorAll('.payment-form').forEach(form => {
         form.classList.remove('active');
     });
 
-    // Remove selected class from payment options
+
     document.querySelectorAll('.payment-option').forEach(option => {
         option.classList.remove('selected');
     });
 }
 
-// Add event listeners for input validation
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Credit card number formatting
+
     const cardNumberInput = document.querySelector('input[placeholder="1234 5678 9012 3456"]');
     if (cardNumberInput) {
         cardNumberInput.addEventListener('input', function(e) {
@@ -253,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Expiry date formatting
+   
     const expiryInput = document.querySelector('input[placeholder="MM/YY"]');
     if (expiryInput) {
         expiryInput.addEventListener('input', function(e) {
@@ -265,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // CVV validation
+
     const cvvInput = document.querySelector('input[placeholder="123"]');
     if (cvvInput) {
         cvvInput.addEventListener('input', function(e) {
@@ -274,5 +271,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ✅ Ensure cart loads when the page is ready
 document.addEventListener("DOMContentLoaded", loadCart);
